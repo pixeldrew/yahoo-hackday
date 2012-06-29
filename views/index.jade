@@ -3,3 +3,52 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+
+  div#ysearch
+    label Search Symbol:
+    input#ysearchinput
+    div#ysearchcontainer
+    input#add(type="button", value="Add")
+
+  script
+    var sUri = "http://d.yimg.com/autoc.finance.yahoo.com/autoc";
+
+    YUI().use('autocomplete', 'autocomplete-highlighters', function (Y) {
+
+      var stockTemplate =
+      '<div class="details">' +
+          '<strong class="symbol">{symbol}</strong>' +
+          '<span class="company">{name}</span>' +
+          '<span class="exchange">{exchange}</span>' +
+      '</div>';
+
+      // Custom formatter for tweets.
+      function stockFormatter(query, results) {
+        // Iterate over the array of tweet result objects and return an
+        // array of HTML strings.
+        return Y.Array.map(results, function (result) {
+          var stock = result.raw;
+
+          // Use string substitution to fill out the tweet template and
+          // return an HTML string for this result.
+          return Y.Lang.sub(stockTemplate, {
+            symbol       : stock.Symbol,
+            name        : stock.Name,
+            exchange : stock.Exchange
+          });
+        });
+      }
+
+      var inputNode  = Y.one('#ysearchinput');
+
+      inputNode.plug(Y.Plugin.AutoComplete, {
+        resultHighlighter: 'phraseMatch',
+        resultTextLocator: 'Symbol',
+         resultFormatter: stockFormatter,
+        source: "select * from csv where url='http://dl.dropbox.com/u/15596789/tickerlist.csv' AND columns='Symbol,Name,Exchange' AND (Name Like '%{query}%')"
+      });
+    });
+
+    $('body').on('click', '#add', function(e) {
+        alert('your momma');
+    });

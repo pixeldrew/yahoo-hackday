@@ -6,3 +6,21 @@ body {
 a {
   color: #00B7FF;
 }
+
+#ysearchinput {
+	width:300px;
+}
+
+.details span {
+	padding-left:14px
+}
+
+.details span:first-child {
+	padding-left:0;
+}
+
+.yui3-aclist-list {
+	border-bottom:1px solid black;
+	border-left:1px solid black;
+	border-right:1px solid black;
+}

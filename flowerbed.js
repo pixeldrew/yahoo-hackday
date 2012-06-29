@@ -1,28 +1,50 @@
 var flowerbed = {}
 
-var YQL = require('YQL');
+var YQL = require('YQL'), _ = require('underscore');
 
-flowerbed.getQuotes = function() {
 
-	console.log('getQuotes');
+flowerbed.getQuotes = function(res,symbols) {
 
-	new YQL.exec("select * from yahoo.finance.quotes where symbol in (@symbols)", function(response) {
+	new YQL.exec("select symbol,ChangeinPercent from yahoo.finance.quotes where symbol in (@symbols)", function(response) {
 
 	if (response.error) {
-		console.log("Example #1... Error: " + response.error.description);
+		console.log(response.error.description);
+
 	} else {
 
-		for(var i=0;i<response.query.results.quote.length;i++) {
-			var symbol  = response.query.results.quote[i].symbol,
-            change = response.query.results.quote[i].Change;
+		var data = [];
 
-			console.log(symbol, change);
+		if(!response.query.results.quote.length) {
+			var symbol  = response.query.results.quote.symbol,
+	        change = response.query.results.quote.ChangeinPercent;
 
+			change = parseFloat(change.replace(/\%/, ''), 10);
+	        data.push({symbol: symbol, change:change});
+
+		} else {
+		
+			for(var i=0;i<response.query.results.quote.length;i++) {
+
+				var symbol  = response.query.results.quote[i].symbol,
+	            change = response.query.results.quote[i].ChangeinPercent;
+
+	           	change = parseFloat(change.replace(/\%/, ''), 10);
+				data.push({symbol: symbol, change:change});
+
+			}
 		}
-        
+		
+
+		var changef = function(f) {
+        	return f.change;
+        };
+
+		var min = _.min(data, changef),max = _.max(data, changef);
+
+        res.send({flowers:data, totals:{min: min, max: max}});
 	}
 
-	}, {"symbols": ["YHOO","AAPL","GOOG","MSFT"]});
+	}, {"symbols": symbols});
 	
 };
 

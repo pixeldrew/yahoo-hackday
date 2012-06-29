@@ -10,6 +10,10 @@ exports.index = function(req, res){
 };
 
 exports.flowerbed = function(req, res) {
-	res.render('index', { title: 'Flowerbed' });	
-	flowerbed.getQuotes();
+
+	var symbols = req.params.symbols.split(',');
+
+	if(symbols.length == 1) symbols = symbols[0];
+	
+	flowerbed.getQuotes(res, symbols);	
 }
