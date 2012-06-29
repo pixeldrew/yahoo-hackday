@@ -1,0 +1,47 @@
+
+#stocks ul li {
+	display: inline-block;
+	list-style-type: none;
+	width: 100px;
+	padding: 100px 10px 0 10px;
+	text-align: center;
+}
+
+.flower {
+	background: url(../images/Odysseus_flower_raw.svg) no-repeat top center;
+	-webkit-background-size: 50px 50px;
+	-moz-background-size: 50px 50px;
+	-o-background-size: 50px 50px;
+	background-size: 50px 50px;
+}
+
+.flower.one {
+	background-image: url(../images/Odysseus_flower_one.svg);
+}
+.flower.one .stem {
+	background-image: url(../images/stem_one.svg);
+}
+.flower.three {
+	background-image: url(../images/Odysseus_flower_three.svg);
+}
+.flower.three .stem {
+	background-image: url(../images/stem_three.svg);
+}
+.flower.five {
+	background-image: url(../images/Odysseus_flower_five.svg);
+}
+.flower.five .stem {
+	background-image: url(../images/stem_five.svg);
+}
+.flower.seven {
+	background-image: url(../images/Odysseus_flower_seven.svg);
+}
+.flower.seven .stem {
+	background-image: url(../images/stem_seven.svg);
+}
+.flower.ten {
+	background-image: url(../images/Odysseus_flower_ten.svg);
+}
+.flower.ten .stem {
+	background-image: url(../images/stem_ten.svg);
+}
