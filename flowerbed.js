@@ -2,7 +2,6 @@ var flowerbed = {}
 
 var YQL = require('YQL'), _ = require('underscore');
 
-
 flowerbed.getQuotes = function(res,symbols) {
 
 	new YQL.exec("select symbol,ChangeinPercent from yahoo.finance.quotes where symbol in (@symbols)", function(response) {
@@ -30,11 +29,9 @@ flowerbed.getQuotes = function(res,symbols) {
 
 	           	change = parseFloat(change.replace(/\%/, ''), 10);
 				data.push({symbol: symbol, change:change});
-
 			}
 		}
 		
-
 		var changef = function(f) {
         	return f.change;
         };

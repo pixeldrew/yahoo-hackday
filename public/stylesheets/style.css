@@ -23,6 +23,12 @@ a {
 	border-bottom:1px solid black;
 	border-left:1px solid black;
 	border-right:1px solid black;
+	background:#fff;
+}
+
+.yui3-aclist {
+	z-index:20 !important;
+	background:#fff;
 }
 
 #holder {
@@ -33,4 +39,61 @@ a {
 
 .stem {
 	position:absolute;
+	bottom:20px;
+	z-index:0;
 }
+
+#grass {
+	position:absolute;
+	background: url('/images/bkg-grass.png') bottom no-repeat;
+	width:599px;
+	height:400px;
+	z-index:1;
+	top:302px;
+	height:100px;
+}
+
+input {
+	outline:none;
+}
+
+#holder {
+	background: url('/images/bg.png') no-repeat;
+}
+
+.flower {
+	position:absolute;
+	width: 103px;
+	height: 80px;
+	background: url('/images/flowers-sprite-80pxl.png') no-repeat;
+}
+
+.flower.color-1 {
+	background-position:0 0;
+}
+
+.flower.color-2 {
+background-position: 0 -80px;
+}
+.flower.color-3 {
+background-position: 0 -160px;	
+}
+.flower.color-4 {
+	background-position: 0 -240px;
+}
+.flower.color-5 {
+background-position: 0 -320px;	
+}
+.flower.color-6 {
+	background-position: 0 -400px;	
+}
+.flower.color-7 {
+background-position: 0 -480px;		
+}
+.flower.color-8 {
+	background-position: 0 -560px;	
+}
+.flower.color-9 {
+background-position: 0 -720px;		
+}
+

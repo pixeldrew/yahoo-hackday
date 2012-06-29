@@ -2,109 +2,16 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
 
   div#ysearch
     label Search Symbol:
     input#ysearchinput
     div#ysearchcontainer
     input#add(type="button", value="Add")
+    input#clear(type="button", value="Clear")
 
   div#holder
-    
+    div#grass
 
-  script
 
-    var sUri = "http://d.yimg.com/autoc.finance.yahoo.com/autoc";
-
-    YUI().use('autocomplete', 'autocomplete-highlighters', function (Y) {
-
-      var stockTemplate =
-      '<div class="details">' +
-          '<strong class="symbol">{symbol}</strong>' +
-          '<span class="company">{name}</span>' +
-          '<span class="exchange">{exchange}</span>' +
-      '</div>';
-
-      function stockFormatter(query, results) {
-
-        return Y.Array.map(results, function (result) {
-          var stock = result.raw;
-
-          return Y.Lang.sub(stockTemplate, {
-            symbol : stock.Symbol,
-            name : stock.Name,
-            exchange : stock.Exchange
-          });
-        });
-      }
-
-      var inputNode  = Y.one('#ysearchinput');
-
-      inputNode.plug(Y.Plugin.AutoComplete, {
-        resultHighlighter: 'phraseMatch',
-        resultTextLocator: 'Symbol',
-        resultFormatter: stockFormatter,
-        source: "select * from csv where url='http://dl.dropbox.com/u/15596789/tickerlist.csv' AND columns='Symbol,Name,Exchange' AND (Name Like '%{query}%')"
-      });
-    });
-
-    function drawFlowers(data) {
-      $('#holder').html('');
-
-      for(var i= 0;i<data.flowers.length;i++) {
-        var change = data.flowers[i].change, symbol = data.flowers[i].symbol;
-        createStem(symbol, change);
-      }
-    }
-
-    function createStem(symbol) {
-      $("<img>", {id:"stem-" + symbol, src: "/images/stem.png"}).appendTo("#holder");
-    }
-
-    function updateStockPrices(stockSymbols) {
-      $.ajax({url:'/flowerbed/' + stockSymbols, success: drawFlowers});
-    }
-
-    $('body').on('click', '#add', function(e) {
-
-      var symbols;
-
-      saveSymbol($('#ysearchinput').val());
-      $('#ysearchinput').val('');
-
-      symbols = getSymbols();
-      updateStockPrices(symbols);
-    });
-
-    function getSymbols() {
-      return sessionStorage.getItem("symbols");
-    }
-
-    function saveSymbol(symbol) {
-      var symbols = getSymbols();
-
-      if(symbols.indexOf(symbol) >=0 ) {
-        return;
-      }
-
-      if(!symbols) {
-        symbols = "";
-      }
-
-      if(symbols.length > 0) {
-        symbols += "," + symbol;
-      } else  {
-        symbols += symbol;
-      }
-
-      sessionStorage.setItem("symbols", symbols);
-    }
-
-    $(function() {
-      var symbols = getSymbols();
-
-      if(symbols) 
-        updateStockPrices(symbols);
-
-    });
+  script(src='/javascripts/script.js')
