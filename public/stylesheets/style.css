@@ -24,3 +24,13 @@ a {
 	border-left:1px solid black;
 	border-right:1px solid black;
 }
+
+#holder {
+	position:relative;
+	width:600px;
+	height:400px;
+}
+
+.stem {
+	position:absolute;
+}

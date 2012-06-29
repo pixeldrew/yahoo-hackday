@@ -10,7 +10,11 @@ block content
     div#ysearchcontainer
     input#add(type="button", value="Add")
 
+  div#holder
+    
+
   script
+
     var sUri = "http://d.yimg.com/autoc.finance.yahoo.com/autoc";
 
     YUI().use('autocomplete', 'autocomplete-highlighters', function (Y) {
@@ -22,18 +26,14 @@ block content
           '<span class="exchange">{exchange}</span>' +
       '</div>';
 
-      // Custom formatter for tweets.
       function stockFormatter(query, results) {
-        // Iterate over the array of tweet result objects and return an
-        // array of HTML strings.
+
         return Y.Array.map(results, function (result) {
           var stock = result.raw;
 
-          // Use string substitution to fill out the tweet template and
-          // return an HTML string for this result.
           return Y.Lang.sub(stockTemplate, {
-            symbol       : stock.Symbol,
-            name        : stock.Name,
+            symbol : stock.Symbol,
+            name : stock.Name,
             exchange : stock.Exchange
           });
         });
@@ -44,11 +44,67 @@ block content
       inputNode.plug(Y.Plugin.AutoComplete, {
         resultHighlighter: 'phraseMatch',
         resultTextLocator: 'Symbol',
-         resultFormatter: stockFormatter,
+        resultFormatter: stockFormatter,
         source: "select * from csv where url='http://dl.dropbox.com/u/15596789/tickerlist.csv' AND columns='Symbol,Name,Exchange' AND (Name Like '%{query}%')"
       });
     });
 
+    function drawFlowers(data) {
+      $('#holder').html('');
+
+      for(var i= 0;i<data.flowers.length;i++) {
+        var change = data.flowers[i].change, symbol = data.flowers[i].symbol;
+        createStem(symbol, change);
+      }
+    }
+
+    function createStem(symbol) {
+      $("<img>", {id:"stem-" + symbol, src: "/images/stem.png"}).appendTo("#holder");
+    }
+
+    function updateStockPrices(stockSymbols) {
+      $.ajax({url:'/flowerbed/' + stockSymbols, success: drawFlowers});
+    }
+
     $('body').on('click', '#add', function(e) {
-        alert('your momma');
+
+      var symbols;
+
+      saveSymbol($('#ysearchinput').val());
+      $('#ysearchinput').val('');
+
+      symbols = getSymbols();
+      updateStockPrices(symbols);
+    });
+
+    function getSymbols() {
+      return sessionStorage.getItem("symbols");
+    }
+
+    function saveSymbol(symbol) {
+      var symbols = getSymbols();
+
+      if(symbols.indexOf(symbol) >=0 ) {
+        return;
+      }
+
+      if(!symbols) {
+        symbols = "";
+      }
+
+      if(symbols.length > 0) {
+        symbols += "," + symbol;
+      } else  {
+        symbols += symbol;
+      }
+
+      sessionStorage.setItem("symbols", symbols);
+    }
+
+    $(function() {
+      var symbols = getSymbols();
+
+      if(symbols) 
+        updateStockPrices(symbols);
+
     });
